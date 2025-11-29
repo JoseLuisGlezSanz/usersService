@@ -1,0 +1,157 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    #Gym
+    findAllGyms: [GymResponse]
+    findByIdGym(id: Int!): GymResponse
+    findAllGymsPaginated(page: Int!, pageSize: Int!): [GymResponse]
+    findByNameGym(name: String!): GymResponse
+
+    #Customer
+    findAllCustomers: [CustomerResponse]
+    findByIdCustomer(id: Int!): CustomerResponse
+    findAllCustomersPaginated(page: Int!, pageSize: Int!): [CustomerResponse]
+    findByNameCustomer(name: String!): [CustomerResponse]
+    findCustomerByVerifiedNumberTrue: [CustomerResponse]
+    findCustomerByVerifiedNumberTruePaginated(page: Int!, pageSize: Int!): [CustomerResponse]
+    findAllCustomersByGymId(gymId: Int!): [CustomerResponse]
+    findAllCustomersByGymIdPaginated(page: Int!, pageSize: Int!, gymId: Int!): [CustomerResponse]
+
+    #EmergencyContact
+    findAllEmergencysContacts: [EmergencyContactResponse]
+    findByIdEmergencyContact(id: Int!): EmergencyContactResponse
+    findAllEmergencysContactsPaginated(page: Int!, pageSize: Int!): [EmergencyContactResponse]
+    findByIdCustomerEmergencyContact(customerId: Int!): EmergencyContactResponse
+
+    #Role
+    findAllRoles: [RoleResponse]
+    findByIdRole(id: Int!): RoleResponse
+    findByStatusRole(statusValue: Int!): [RoleResponse]
+
+    #User
+    findAllUsers: [UserResponse]
+    findByIdUser(id: Int!): UserResponse
+    findAllUsersPaginated(page: Int!, pageSize: Int!): [UserResponse]
+    findByMailUser(mail: String!): UserResponse
+    findByNameUser(nameUser: String!): UserResponse
+    findByRoleIdUser(roleId: Int!): [UserResponse]
+    findByGymIdUser(gymId: Int!): [UserResponse]
+}
+
+type Mutation {
+    #Gym
+    createGym(gymRequest: GymRequest!): GymResponse
+    updateGym(id: Int!, gymRequest: GymRequest!): GymResponse
+    # deleteGym(id: Int!): Boolean
+
+    #Customer
+    createCustomer(customerRequest: CustomerRequest!): CustomerResponse
+    updateCustomer(id: Int!, customerRequest: CustomerRequest!): CustomerResponse
+    # deleteCustomer(id: Int!): Boolean
+
+    #EmergencyContact
+    updateEmergencyContact(id: Int!, emergencyContactRequest: EmergencyContactRequest!): EmergencyContactResponse
+    # deleteEmergencyContact(id: Int!): Boolean
+
+    #Role
+    createRole(roleRequest: RoleRequest!): RoleResponse
+    updateRole(id: Int!, roleRequest: RoleRequest!): RoleResponse
+    # deleteRole(id: Int!): Boolean
+
+    #User
+    createUser(userRequest: UserRequest!): UserResponse
+    updateUser(id: Int!, userRequest: UserRequest!): UserResponse  # CORREGIDO: era updateRole
+    # deleteUser(id: Int!): Boolean
+}
+
+#-------------------Gym-------------------
+input GymRequest {
+    name: String!
+}
+
+type GymResponse {
+    id: Int!
+    name: String!
+}
+
+#------------------Customer----------------
+input CustomerRequest {
+    name: String!
+    cologne: String!
+    phone: String!
+    birthDate: String!  # CORREGIDO: Date -> String
+    medicalCondition: Boolean!
+    photo: String!
+    photoCredential: String!
+    verifiedNumber: Boolean
+    gymId: Int!
+    contactName: String!
+    contactPhone: String!
+}
+
+type CustomerResponse {
+    id: Int!
+    name: String!
+    cologne: String!
+    phone: String!
+    birthDate: String!  
+    medicalCondition: Boolean!
+    photo: String!
+    photoCredential: String!
+    verifiedNumber: Boolean
+    gymId: Int!
+    contactId: Int!
+    registrationDate: String!  
+}
+
+#---------------EmergencyContact-------------
+input EmergencyContactRequest {
+    contactName: String!
+    contactPhone: String!
+}
+
+type EmergencyContactResponse {
+    id: Int!
+    contactName: String!
+    contactPhone: String!
+}
+
+#---------------------Role-------------------
+input RoleRequest {
+    authority: String!
+    status: Int!
+}
+
+type RoleResponse {
+    id: Int!
+    authority: String!
+    status: Int!
+}
+
+#----------------------User-------------------
+input UserRequest {
+    userName: String!
+    mail: String!
+    phone: String!
+    name: String!
+    password: String!
+    status: Int!
+    roleId: Int!
+    gymId: Int!
+}
+
+type UserResponse {
+    id: Int!
+    userName: String!
+    mail: String!
+    phone: String!
+    name: String!
+    password: String!
+    status: Int!
+    roleId: Int!
+    authority: String!
+    gymId: Int!
+}
